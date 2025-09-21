@@ -13,17 +13,17 @@ interface RaceSelectorProps {
 
 const RaceSelector: React.FC<RaceSelectorProps> = ({ selectedRace, selectedGender, onSelectRace, onSelectGender }) => {
   const raceDescriptions: Record<CharacterRace, string> = {
-    'Dwarf': 'Крепкие и выносливые жители подземных городов. +2 Телосложение, +1 Мудрость, -1 Харизма. Видят в темноте и искусны в работе с камнем и металлом.',
-    'Elf': 'Изящные и долгоживущие обитатели лесов. +2 Ловкость, +1 Интеллект, -1 Телосложение. Имеют особое зрение и устойчивы к зачарованию.',
-    'Goblin': 'Маленькие, ловкие и изобретательные существа. +2 Ловкость, +1 Харизма, -1 Сила. Могут видеть в темноте и проникать в узкие пространства.',
-    'Halfling': 'Маленькие и удачливые существа. +2 Ловкость, +1 Харизма, -1 Сила. Природная удачливость и скрытность помогают им избегать опасностей.',
-    'Half-Orc': 'Сильные воины, объединяющие лучшие качества людей и орков. +2 Сила, +1 Телосложение, -1 Интеллект. Устойчивы к ранам и обладают свирепостью в бою.',
-    'Human': 'Универсальные, адаптивные и амбициозные. +1 ко всем характеристикам. Быстро обучаются новым навыкам и способны преуспеть в любой области.',
+    'Dwarf': 'Strong and enduring inhabitants of underground cities. +2 Constitution, +1 Wisdom, -1 Charisma. They can see in the dark and are skilled in working with stone and metal.',
+    'Elf': 'Graceful and long-lived forest dwellers. +2 Dexterity, +1 Intelligence, -1 Constitution. They have special vision and are resistant to enchantment.',
+    'Goblin': 'Small, agile, and inventive creatures. +2 Dexterity, +1 Charisma, -1 Strength. They can see in the dark and squeeze into tight spaces.',
+    'Halfling': 'Small and lucky creatures. +2 Dexterity, +1 Charisma, -1 Strength. Their natural luck and stealth help them avoid dangers.',
+    'Half-Orc': 'Strong warriors combining the best qualities of humans and orcs. +2 Strength, +1 Constitution, -1 Intelligence. They are resistant to wounds and possess ferocity in battle.',
+    'Human': 'Universal, adaptive, and ambitious. +1 to all characteristics. They learn new skills quickly and can excel in any field.',
   };
 
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-bold mb-4">Выберите расу</h3>
+      <h3 className="text-lg font-bold mb-4">Choose a race</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {RACES.map((race) => (
           <motion.div
@@ -43,7 +43,7 @@ const RaceSelector: React.FC<RaceSelectorProps> = ({ selectedRace, selectedGende
                 alt={race}
                 className="object-cover w-full h-full"
                 onError={(e) => {
-                  // Если изображение не найдено, показываем заглушку
+                  // If image not found, show placeholder
                   (e.target as HTMLImageElement).src = '/upload/character-portraits/placeholder.png';
                 }}
               />
@@ -59,7 +59,7 @@ const RaceSelector: React.FC<RaceSelectorProps> = ({ selectedRace, selectedGende
         ))}
       </div>
       
-      {/* Переключатель пола */}
+      {/* Gender switch */}
       <div className="flex justify-center mt-6 mb-3">
         <div className="bg-card rounded-full p-1 inline-flex">
           {GENDERS.map((gender) => (
@@ -72,14 +72,14 @@ const RaceSelector: React.FC<RaceSelectorProps> = ({ selectedRace, selectedGende
                   : 'text-foreground hover:bg-secondary'
               }`}
             >
-              {gender === 'Male' ? 'Мужской' : 'Женский'}
+              {gender === 'Male' ? 'Male' : 'Female'}
             </button>
           ))}
         </div>
       </div>
       
       <div className="mt-4 p-4 bg-card rounded-md">
-        <h4 className="font-medium mb-2">Особенности расы: {selectedRace}</h4>
+        <h4 className="font-medium mb-2">Race traits: {selectedRace}</h4>
         <p className="text-sm text-muted-foreground">
           {raceDescriptions[selectedRace]}
         </p>

@@ -57,14 +57,14 @@ const CreateCharacterCard = () => {
       const metadata = characterToTokenMetadata(character);
       const metadataString = JSON.stringify(metadata);
       
-      // В реальном приложении здесь будет загрузка метаданных в IPFS
+      // In a real application, there would be metadata upload to IPFS here
       // const ipfsHash = await uploadToIPFS(metadataString);
       // const tokenURI = `ipfs://${ipfsHash}`;
       
-      // Для примера используем строку JSON напрямую
+      // For example, we're using JSON string directly
       // mintCharacter(metadataString);
       
-      // Имитируем задержку
+      // Simulate delay
       setTimeout(() => {
         setIsLoading(false);
       }, 2000);
@@ -111,14 +111,14 @@ const CreateCharacterCard = () => {
             color: '#f0f0f0',
             marginBottom: '0.5rem'
           }}>
-            Создайте персонажа
+            Create a Character
           </h3>
           
           <p style={{
             color: 'rgba(240, 240, 240, 0.7)',
             marginBottom: '1.5rem'
           }}>
-            Создайте нового персонажа D&D и сохраните его в виде уникального токена NFT
+            Create a new D&D character and save it as a unique NFT token
           </p>
           
           <button
@@ -139,7 +139,7 @@ const CreateCharacterCard = () => {
             }}
             className="neon-border"
           >
-            {isConnected ? 'Начать создание' : 'Сначала подключите кошелёк'}
+            {isConnected ? 'Start creation' : 'Connect wallet first'}
           </button>
         </div>
       ) : (
@@ -150,7 +150,7 @@ const CreateCharacterCard = () => {
             color: '#f0f0f0',
             marginBottom: '1rem'
           }}>
-            Создание персонажа
+            Character Creation
           </h3>
           
           <RaceSelector 
@@ -175,7 +175,7 @@ const CreateCharacterCard = () => {
               }}
               className="hover:bg-gray-800"
             >
-              Назад
+              Back
             </button>
             
             <button
@@ -195,7 +195,7 @@ const CreateCharacterCard = () => {
               }}
               className="neon-border"
             >
-              {isLoading ? 'Создание...' : 'Создать персонажа'}
+              {isLoading ? 'Creating...' : 'Create Character'}
             </button>
           </div>
         </div>

@@ -10,10 +10,10 @@ interface InfoBlockProps {
 const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {/* Имя и портрет */}
+      {/* Name and portrait */}
       <div className="col-span-1 flex flex-col">
         <div className="mb-3">
-          <label className="block text-xs text-muted-foreground mb-1">Имя</label>
+          <label className="block text-xs text-muted-foreground mb-1">Name</label>
           {isEditing ? (
             <input
               type="text"
@@ -34,7 +34,7 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
               className="w-full md:w-auto md:max-w-[1000px] md:max-h-[1000px] object-contain rounded" 
               onError={(e) => {
                 console.log('Image not found:', e.currentTarget.src, 'Gender:', character.gender);
-                // Если изображение не найдено, показываем заглушку
+                // If image not found, show placeholder
                 (e.target as HTMLImageElement).src = '/upload/character-portraits/placeholder.png';
               }}
             />
@@ -42,20 +42,20 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
         </div>
       </div>
 
-      {/* Основные характеристики в табличном виде */}
+      {/* Main characteristics in tabular form */}
       <div className="col-span-1 md:col-span-2">
         {isEditing ? (
-          // Редактируемый вид - оставляем форму для удобства редактирования
+          // Editable view - keep form for convenient editing
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Раса</label>
+              <label className="block text-xs text-muted-foreground mb-1">Race</label>
               <select
                 value={character.race}
                 onChange={(e) => {
                   const newRace = e.target.value;
                   onChange('race', newRace);
                   
-                  // Обновляем портрет при изменении расы
+                  // Update portrait when race changes
                   const portraitPath = character.gender === 'Female' 
                     ? `/upload/character-portraits/${newRace.toLowerCase().replace('-', '_')}_female.png` 
                     : `/upload/character-portraits/${newRace.toLowerCase().replace('-', '_')}.png`;
@@ -74,14 +74,14 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
             </div>
             
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Пол</label>
+              <label className="block text-xs text-muted-foreground mb-1">Gender</label>
               <select
                 value={character.gender}
                 onChange={(e) => {
                   const newGender = e.target.value;
                   onChange('gender', newGender);
                   
-                  // Принудительное обновление портрета при изменении пола
+                  // Force portrait update when gender changes
                   const race = character.race.toLowerCase().replace('-', '_');
                   const portraitPath = newGender === 'Female' 
                     ? `/upload/character-portraits/${race}_female.png` 
@@ -90,7 +90,7 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
                   console.log('Updating portrait to:', portraitPath, 'Gender:', newGender);
                   onChange('portrait', portraitPath);
                   
-                  // Задержка для рендеринга изменений
+                  // Delay for rendering changes
                   setTimeout(() => {
                     const newCharacter = { ...character, gender: newGender, portrait: portraitPath };
                     onChange('portrait', portraitPath);
@@ -100,14 +100,14 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
               >
                 {GENDERS.map((gender) => (
                   <option key={gender} value={gender}>
-                    {gender === 'Male' ? 'Мужской' : 'Женский'}
+                    {gender === 'Male' ? 'Male' : 'Female'}
                   </option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Класс</label>
+              <label className="block text-xs text-muted-foreground mb-1">Class</label>
               <input
                 type="text"
                 value={character.class}
@@ -117,7 +117,7 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
             </div>
 
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Уровень</label>
+              <label className="block text-xs text-muted-foreground mb-1">Level</label>
               <input
                 type="number"
                 value={character.level}
@@ -171,7 +171,7 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
             </div>
 
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Мировоззрение</label>
+              <label className="block text-xs text-muted-foreground mb-1">Alignment</label>
               <input
                 type="text"
                 value={character.alignment || ''}
@@ -181,7 +181,7 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
             </div>
 
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Предыстория</label>
+              <label className="block text-xs text-muted-foreground mb-1">Background</label>
               <input
                 type="text"
                 value={character.background || ''}
@@ -191,7 +191,7 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
             </div>
 
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Божество</label>
+              <label className="block text-xs text-muted-foreground mb-1">Deity</label>
               <input
                 type="text"
                 value={character.deity || ''}
@@ -201,20 +201,20 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
             </div>
           </div>
         ) : (
-          // Табличный вид для режима просмотра
+          // Table view for display mode
           <div className="bg-card rounded-lg border border-border p-4">
             <table className="w-full text-sm">
               <tbody>
                 <tr>
-                  <td className="py-1 pr-4 text-xs text-muted-foreground">Раса:</td>
+                  <td className="py-1 pr-4 text-xs text-muted-foreground">Race:</td>
                   <td className="py-1 font-medium">{character.race}</td>
-                  <td className="py-1 pr-4 text-xs text-muted-foreground">Пол:</td>
-                  <td className="py-1 font-medium">{character.gender === 'Male' ? 'Мужской' : 'Женский'}</td>
+                  <td className="py-1 pr-4 text-xs text-muted-foreground">Gender:</td>
+                  <td className="py-1 font-medium">{character.gender === 'Male' ? 'Male' : 'Female'}</td>
                 </tr>
                 <tr>
-                  <td className="py-1 pr-4 text-xs text-muted-foreground">Класс:</td>
+                  <td className="py-1 pr-4 text-xs text-muted-foreground">Class:</td>
                   <td className="py-1 font-medium">{character.class}</td>
-                  <td className="py-1 pr-4 text-xs text-muted-foreground">Уровень:</td>
+                  <td className="py-1 pr-4 text-xs text-muted-foreground">Level:</td>
                   <td className="py-1 font-medium">{character.level}</td>
                 </tr>
                 <tr>
@@ -226,13 +226,13 @@ const InfoBlock = ({ character, isEditing, onChange }: InfoBlockProps) => {
                 <tr>
                   <td className="py-1 pr-4 text-xs text-muted-foreground">AC:</td>
                   <td className="py-1 font-medium">{character.ac}</td>
-                  <td className="py-1 pr-4 text-xs text-muted-foreground">Мировоззрение:</td>
+                  <td className="py-1 pr-4 text-xs text-muted-foreground">Alignment:</td>
                   <td className="py-1 font-medium">{character.alignment || '-'}</td>
                 </tr>
                 <tr>
-                  <td className="py-1 pr-4 text-xs text-muted-foreground">Предыстория:</td>
+                  <td className="py-1 pr-4 text-xs text-muted-foreground">Background:</td>
                   <td className="py-1 font-medium">{character.background || '-'}</td>
-                  <td className="py-1 pr-4 text-xs text-muted-foreground">Божество:</td>
+                  <td className="py-1 pr-4 text-xs text-muted-foreground">Deity:</td>
                   <td className="py-1 font-medium">{character.deity || '-'}</td>
                 </tr>
               </tbody>

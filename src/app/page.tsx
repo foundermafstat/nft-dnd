@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { 
   Card, 
   CardHeader, 
@@ -26,28 +27,29 @@ import { toast } from 'sonner';
 
 export default function Home() {
   const { isConnected } = useWeb3();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCreateCharacter = () => {
     if (!isConnected) {
-      toast.error('Подключите кошелек для создания персонажа');
+      toast.error('Connect wallet to create a character');
       return;
     }
     
-    // Здесь логика создания персонажа
-    toast.success('Новый персонаж создан');
+    // Redirect to character creation page
+    router.push('/character/create');
   };
 
   const handlePlayGame = () => {
     if (!isConnected) {
-      toast.error('Подключите кошелек для игры');
+      toast.error('Connect wallet to play');
       return;
     }
     
-    toast('Подготовка к игре...', {
-      description: 'Соединение с игровым сервером...',
+    toast('Preparing for game...', {
+      description: 'Connecting to game server...',
       action: {
-        label: 'Отмена',
+        label: 'Cancel',
         onClick: () => toast.dismiss(),
       },
     });
@@ -56,12 +58,12 @@ export default function Home() {
   const characters = [
     { 
       id: 1, 
-      name: 'Ралина', 
-      class: 'Волшебник', 
+      name: 'Ralina', 
+      class: 'Wizard', 
       level: 5, 
       race: 'Elf',
       gender: 'Female',
-      image: '', // Удаляем фиксированное изображение и используем логику формирования пути
+      image: '', // Removing fixed image and using path generation logic
       stats: {
         strength: 8,
         dexterity: 14,
@@ -73,8 +75,8 @@ export default function Home() {
     },
     { 
       id: 2, 
-      name: 'Торн', 
-      class: 'Воин', 
+      name: 'Thorn', 
+      class: 'Warrior', 
       level: 7, 
       race: 'Human',
       gender: 'Male',
@@ -90,8 +92,8 @@ export default function Home() {
     },
     {
       id: 3,
-      name: 'Грокк',
-      class: 'Варвар',
+      name: 'Grokk',
+      class: 'Barbarian',
       level: 6,
       race: 'Half-Orc',
       gender: 'Male',
@@ -107,8 +109,8 @@ export default function Home() {
     },
     {
       id: 4,
-      name: 'Лилия',
-      class: 'Друид',
+      name: 'Lilia',
+      class: 'Druid',
       level: 5,
       race: 'Halfling',
       gender: 'Female',
@@ -131,20 +133,20 @@ export default function Home() {
           <h1 className="text-3xl font-bold neon-text">NFT D&D</h1>
           {isConnected ? (
             <Button onClick={handlePlayGame} className="group bg-primary/20 border-primary neon-border hover:bg-primary/30 text-primary hover:text-primary">
-              <Dices className="mr-2 h-4 w-4 group-hover:animate-spin" /> Играть сейчас
+              <Dices className="mr-2 h-4 w-4 group-hover:animate-spin" /> Play now
             </Button>
           ) : null}
         </div>
         
         <p className="text-muted-foreground">
-          Управляйте своими персонажами D&D в виде NFT на блокчейне
+          Manage your D&D characters as NFTs on blockchain
         </p>
       </section>
 
       <Tabs defaultValue="characters" className="w-full space-y-4">
         <TabsList className="grid grid-cols-2 w-full md:w-[400px] border border-border">
-          <TabsTrigger value="characters">Персонажи</TabsTrigger>
-          <TabsTrigger value="history">История</TabsTrigger>
+          <TabsTrigger value="characters">Characters</TabsTrigger>
+          <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>
         <TabsContent value="characters" className="mt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -169,7 +171,7 @@ export default function Home() {
                 onClick={handleCreateCharacter}
               >
                 <PlusCircle className="h-10 w-10" />
-                <span>Создать нового персонажа</span>
+                <span>Create new character</span>
               </Button>
             </Card>
           </div>
@@ -184,33 +186,33 @@ export default function Home() {
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>История игр</CardTitle>
-                <CardDescription>Последние игровые сессии и броски костей</CardDescription>
+                <CardTitle>Game History</CardTitle>
+                <CardDescription>Recent game sessions and dice rolls</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="rounded-lg bg-muted p-4">
                   <div className="flex justify-between">
                     <div>
-                      <h4 className="font-medium">Сессия #12 - Подземелье забытых</h4>
-                      <p className="text-sm text-muted-foreground">15 сентября 2025</p>
+                      <h4 className="font-medium">Session #12 - Forgotten Dungeon</h4>
+                      <p className="text-sm text-muted-foreground">September 15, 2025</p>
                     </div>
-                    <Badge variant="outline">Завершена</Badge>
+                    <Badge variant="outline">Completed</Badge>
                   </div>
                 </div>
                 <div className="rounded-lg bg-muted p-4">
                   <div className="flex justify-between">
                     <div>
-                      <h4 className="font-medium">Сессия #11 - Битва с гоблинами</h4>
-                      <p className="text-sm text-muted-foreground">10 сентября 2025</p>
+                      <h4 className="font-medium">Session #11 - Battle with Goblins</h4>
+                      <p className="text-sm text-muted-foreground">September 10, 2025</p>
                     </div>
-                    <Badge variant="outline">Завершена</Badge>
+                    <Badge variant="outline">Completed</Badge>
                   </div>
                 </div>
               </CardContent>
               <CardFooter>
                 <Link href="/history">
                   <Button variant="outline" size="sm">
-                    Вся история <ChevronRight className="ml-2 h-4 w-4" />
+                    Full History <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </CardFooter>

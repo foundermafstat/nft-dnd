@@ -3,18 +3,27 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useDiceGame } from '@/hooks/useDiceGame';
+import { useCharacterStore } from '@/store/characterStore';
 
-const DiceRoller = () => {
+interface DiceRollerProps {
+  characterName?: string;
+}
+
+const DiceRoller = ({ characterName }: DiceRollerProps) => {
   const { rollDiceLocal, isRolling } = useDiceGame();
+  const { character: storeCharacter } = useCharacterStore();
   const [selectedDice, setSelectedDice] = useState<'d4' | 'd6' | 'd20'>('d20');
   const [reason, setReason] = useState('');
   
+  // Use provided name or name from store
+  const currentCharacterName = characterName || (storeCharacter?.name || 'Character');
+  
   const handleRoll = () => {
-    rollDiceLocal(selectedDice, reason);
+    rollDiceLocal(selectedDice, reason, currentCharacterName);
     setReason('');
   };
 
-  // Стили для каждого типа кубика
+  // Styles for each dice type
   const diceColors = {
     'd4': {
       bg: 'rgba(59, 130, 246, 0.2)',
@@ -48,7 +57,7 @@ const DiceRoller = () => {
         fontWeight: 'bold',
         marginBottom: '1rem',
         color: '#f0f0f0'
-      }}>Кинуть кубик</h3>
+      }}>Roll Dice</h3>
       
       <div style={{
         display: 'flex',
@@ -82,7 +91,7 @@ const DiceRoller = () => {
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           disabled={isRolling}
-          placeholder="Причина броска (необязательно)"
+          placeholder="Roll reason (optional)"
           style={{
             width: '100%',
             padding: '0.5rem 1rem',
@@ -115,7 +124,7 @@ const DiceRoller = () => {
           opacity: isRolling ? 0.5 : 1
         }}
       >
-        {isRolling ? 'Бросаем...' : `Бросить ${selectedDice}`}
+        {isRolling ? 'Rolling...' : `Roll ${selectedDice}`}
       </motion.button>
     </div>
   );

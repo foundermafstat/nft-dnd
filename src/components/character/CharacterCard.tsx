@@ -35,7 +35,7 @@ type CharacterProps = {
   class: string;
   level: number;
   race: string;
-  gender?: string; // Добавляем поле пола
+  gender?: string; // Adding gender field
   image?: string;
   stats?: {
     strength: number;
@@ -49,7 +49,7 @@ type CharacterProps = {
 };
 
 const StatIndicator = ({ value, icon, label }: { value: number, icon: React.ReactNode, label: string }) => {
-  // Определяем цвет индикатора в зависимости от значения
+  // Determine indicator color based on value
   const getColorClass = (val: number) => {
     if (val >= 16) return "text-green-500";
     if (val >= 12) return "text-blue-500";
@@ -68,7 +68,7 @@ const StatIndicator = ({ value, icon, label }: { value: number, icon: React.Reac
       </HoverCardTrigger>
       <HoverCardContent className="w-auto p-2">
         <p className="text-sm">{label}: {value}</p>
-        <p className="text-xs text-muted-foreground">Модификатор: {Math.floor((value - 10) / 2)}</p>
+        <p className="text-xs text-muted-foreground">Modifier: {Math.floor((value - 10) / 2)}</p>
       </HoverCardContent>
     </HoverCard>
   );
@@ -108,10 +108,10 @@ export function CharacterCard({
   }
 
   return (
-    <Link href={`/character?id=${id}`} className="block h-full">
+    <Link href={`/character/${id}`} className="block h-full">
       <Card className="overflow-hidden h-full transition-all hover:shadow-lg hover:border-primary cursor-pointer neon-border-hover">
         <div className="aspect-[4/3] relative bg-muted w-full">
-          {/* Используем существующее изображение или генерируем путь на основе расы и пола */}
+          {/* Use existing image or generate path based on race and gender */}
           <Image 
             src={
               image || 
@@ -123,15 +123,15 @@ export function CharacterCard({
             alt={name}
             className="object-cover w-full h-full"
             onError={(e) => {
-              // Если изображение не найдено, показываем заглушку
-              // @ts-ignore - игнорируем ошибку типа для currentTarget.src
+              // If image not found, show placeholder
+              // @ts-ignore - ignore type error for currentTarget.src
               e.currentTarget.src = '/upload/character-portraits/placeholder.png';
               console.log('Image not found:', e.currentTarget.src);
             }}
           />
           <div className="absolute top-2 right-2">
             <Badge variant="secondary" className="opacity-90">
-              {level} уровень
+              {level} level
             </Badge>
           </div>
         </div>
@@ -150,22 +150,22 @@ export function CharacterCard({
               <StatIndicator 
                 value={stats.strength} 
                 icon={<Swords className="h-4 w-4" />} 
-                label="Сила"
+                label="Strength"
               />
               <StatIndicator 
                 value={stats.dexterity} 
                 icon={<Shield className="h-4 w-4" />} 
-                label="Ловкость"
+                label="Dexterity"
               />
               <StatIndicator 
                 value={stats.constitution} 
                 icon={<HeartPulse className="h-4 w-4" />} 
-                label="Телосложение"
+                label="Constitution"
               />
               <StatIndicator 
                 value={stats.intelligence} 
                 icon={<Brain className="h-4 w-4" />} 
-                label="Интеллект"
+                label="Intelligence"
               />
             </div>
           </CardContent>
@@ -173,7 +173,7 @@ export function CharacterCard({
         
         <CardFooter className="p-4 pt-0">
           <Button variant="outline" size="sm" className="w-full hover:bg-primary/20 hover:text-primary">
-            Подробнее <ChevronRight className="ml-2 h-4 w-4" />
+            Details <ChevronRight className="ml-2 h-4 w-4" />
           </Button>
         </CardFooter>
       </Card>

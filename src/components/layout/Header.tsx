@@ -22,12 +22,12 @@ import { cn } from '@/lib/utils';
 const MainNav = () => {
   const { isConnected, address, disconnect } = useWeb3();
 
-  // Пункты основного меню
+  // Main menu items
   const menuItems = [
-    { title: 'Главная', href: '/' },
-    { title: 'Персонажи', href: '/character' },
-    { title: 'История игр', href: '/history' },
-    { title: 'Информация', href: '/info' },
+    { title: 'Home', href: '/' },
+    { title: 'Characters', href: '/character' },
+    { title: 'Game History', href: '/history' },
+    { title: 'Information', href: '/info' },
   ];
 
   return (
@@ -49,13 +49,13 @@ const MainNav = () => {
 };
 
 const MobileNav = () => {
-  // Пункты мобильного меню
+  // Mobile menu items
   const menuItems = [
-    { title: 'Главная', href: '/' },
-    { title: 'Персонажи', href: '/character' },
-    { title: 'История игр', href: '/history' },
-    { title: 'Информация', href: '/info' },
-    { title: 'Настройки', href: '/settings' },
+    { title: 'Home', href: '/' },
+    { title: 'Characters', href: '/character' },
+    { title: 'Game History', href: '/history' },
+    { title: 'Information', href: '/info' },
+    { title: 'Settings', href: '/settings' },
   ];
 
   return (
@@ -63,7 +63,7 @@ const MobileNav = () => {
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="md:hidden">
           <Menu className="h-5 w-5" />
-          <span className="sr-only">Открыть меню</span>
+          <span className="sr-only">Open menu</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
@@ -108,21 +108,21 @@ const UserMenu = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel>Мой аккаунт</DropdownMenuLabel>
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex-col items-start">
-          <p className="text-sm font-medium">Кошелек</p>
+          <p className="text-sm font-medium">Wallet</p>
           <p className="text-xs text-muted-foreground">{addressDisplay}</p>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link href="/profile" className="w-full">Профиль</Link>
+          <Link href="/profile" className="w-full">Profile</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href="/settings" className="w-full">Настройки</Link>
+          <Link href="/settings" className="w-full">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => disconnect()}>Отключить кошелек</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => disconnect()}>Disconnect wallet</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
