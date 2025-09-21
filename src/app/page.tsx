@@ -1,103 +1,223 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { 
+  Card, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription, 
+  CardContent, 
+  CardFooter 
+} from '@/components/ui/card';
+import { CharacterCard } from '@/components/character/CharacterCard';
+import { Button } from '@/components/ui/button';
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { PlusCircle, ChevronRight, Dices } from 'lucide-react';
+import { useWeb3 } from '@/hooks/useWeb3';
+import { toast } from 'sonner';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { isConnected } = useWeb3();
+  const [isLoading, setIsLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleCreateCharacter = () => {
+    if (!isConnected) {
+      toast.error('Подключите кошелек для создания персонажа');
+      return;
+    }
+    
+    // Здесь логика создания персонажа
+    toast.success('Новый персонаж создан');
+  };
+
+  const handlePlayGame = () => {
+    if (!isConnected) {
+      toast.error('Подключите кошелек для игры');
+      return;
+    }
+    
+    toast('Подготовка к игре...', {
+      description: 'Соединение с игровым сервером...',
+      action: {
+        label: 'Отмена',
+        onClick: () => toast.dismiss(),
+      },
+    });
+  };
+
+  const characters = [
+    { 
+      id: 1, 
+      name: 'Ралина', 
+      class: 'Волшебник', 
+      level: 5, 
+      race: 'Elf',
+      gender: 'Female',
+      image: '', // Удаляем фиксированное изображение и используем логику формирования пути
+      stats: {
+        strength: 8,
+        dexterity: 14,
+        constitution: 12,
+        intelligence: 17,
+        wisdom: 13,
+        charisma: 10
+      }
+    },
+    { 
+      id: 2, 
+      name: 'Торн', 
+      class: 'Воин', 
+      level: 7, 
+      race: 'Human',
+      gender: 'Male',
+      image: '',
+      stats: {
+        strength: 16,
+        dexterity: 12,
+        constitution: 15,
+        intelligence: 8,
+        wisdom: 10,
+        charisma: 14
+      }
+    },
+    {
+      id: 3,
+      name: 'Грокк',
+      class: 'Варвар',
+      level: 6,
+      race: 'Half-Orc',
+      gender: 'Male',
+      image: '',
+      stats: {
+        strength: 18,
+        dexterity: 12,
+        constitution: 16,
+        intelligence: 7,
+        wisdom: 10,
+        charisma: 8
+      }
+    },
+    {
+      id: 4,
+      name: 'Лилия',
+      class: 'Друид',
+      level: 5,
+      race: 'Halfling',
+      gender: 'Female',
+      image: '',
+      stats: {
+        strength: 10,
+        dexterity: 16,
+        constitution: 12,
+        intelligence: 13,
+        wisdom: 17,
+        charisma: 14
+      }
+    },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <section className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold neon-text">NFT D&D</h1>
+          {isConnected ? (
+            <Button onClick={handlePlayGame} className="group bg-primary/20 border-primary neon-border hover:bg-primary/30 text-primary hover:text-primary">
+              <Dices className="mr-2 h-4 w-4 group-hover:animate-spin" /> Играть сейчас
+            </Button>
+          ) : null}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        
+        <p className="text-muted-foreground">
+          Управляйте своими персонажами D&D в виде NFT на блокчейне
+        </p>
+      </section>
+
+      <Tabs defaultValue="characters" className="w-full space-y-4">
+        <TabsList className="grid grid-cols-2 w-full md:w-[400px] border border-border">
+          <TabsTrigger value="characters">Персонажи</TabsTrigger>
+          <TabsTrigger value="history">История</TabsTrigger>
+        </TabsList>
+        <TabsContent value="characters" className="mt-4 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {characters.map(character => (
+              <CharacterCard 
+                key={character.id}
+                id={character.id}
+                name={character.name}
+                class={character.class}
+                level={character.level}
+                race={character.race}
+                gender={character.gender}
+                image={character.image}
+                stats={character.stats}
+              />
+            ))}
+            
+            <Card className="overflow-hidden border-dashed h-full flex flex-col items-center justify-center p-6 neon-border-hover">
+              <Button 
+                variant="ghost" 
+                className="h-32 w-full flex flex-col gap-2 hover:bg-primary/10 hover:text-primary" 
+                onClick={handleCreateCharacter}
+              >
+                <PlusCircle className="h-10 w-10" />
+                <span>Создать нового персонажа</span>
+              </Button>
+            </Card>
+          </div>
+        </TabsContent>
+        <TabsContent value="history" className="mt-4">
+          {isLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>История игр</CardTitle>
+                <CardDescription>Последние игровые сессии и броски костей</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="rounded-lg bg-muted p-4">
+                  <div className="flex justify-between">
+                    <div>
+                      <h4 className="font-medium">Сессия #12 - Подземелье забытых</h4>
+                      <p className="text-sm text-muted-foreground">15 сентября 2025</p>
+                    </div>
+                    <Badge variant="outline">Завершена</Badge>
+                  </div>
+                </div>
+                <div className="rounded-lg bg-muted p-4">
+                  <div className="flex justify-between">
+                    <div>
+                      <h4 className="font-medium">Сессия #11 - Битва с гоблинами</h4>
+                      <p className="text-sm text-muted-foreground">10 сентября 2025</p>
+                    </div>
+                    <Badge variant="outline">Завершена</Badge>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Link href="/history">
+                  <Button variant="outline" size="sm">
+                    Вся история <ChevronRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
